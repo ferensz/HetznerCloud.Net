@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>HetznerCloud.Api.ConsoleTest</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="hetznercloudapi" Version="1.0.27" />
+      <PackageReference Include="System.Text.Json" Version="5.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\HetznerCloud.Net\HetznerCloud.Net.csproj" />
+    </ItemGroup>
+
+</Project>
