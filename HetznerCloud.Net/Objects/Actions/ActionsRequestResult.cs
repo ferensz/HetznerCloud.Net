@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using HetznerCloud.Net.Core;
+using HetznerCloud.Net.Core.Requests;
 
 namespace HetznerCloud.Net.Objects.Actions
 {
-    public class ActionsRequestResult
+    public class ActionsRequestResult : MultipleObjectsResultBase<Action>
     {
-        public List<Action> Actions { get; set; }
-        
-        public Meta Meta { get; set; }
+        [JsonPropertyName("actions")]
+        public override List<Action> Data { get; set; }
     }
 }

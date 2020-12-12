@@ -1,7 +1,10 @@
-﻿namespace HetznerCloud.Net.Objects.Certificates
+﻿using System.Text.Json.Serialization;
+
+namespace HetznerCloud.Net.Objects.Certificates
 {
-    public class SingleCertificateRequestResult
+    public class SingleCertificateRequestResult : SingleObjectResultBase<Certificate>
     {
-        public Certificate Certificate { get; set; }
+        [JsonPropertyName("certificate")] 
+        public override Certificate Data { get; set; }
     }
 }
