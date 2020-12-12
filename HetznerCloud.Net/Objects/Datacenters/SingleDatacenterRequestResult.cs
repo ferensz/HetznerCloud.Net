@@ -3,9 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace HetznerCloud.Net.Objects.Datacenters
 {
-    public class SingleDatacenterRequestResult
+    public class SingleDatacenterRequestResult : SingleObjectResultBase<Datacenter>
     {
         [JsonPropertyName("datacenter")]
-        public Datacenter Datacenter { get; set; }
+        public override Datacenter Data { get; set; }
     }
 }

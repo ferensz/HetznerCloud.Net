@@ -1,18 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using HetznerCloud.Net.Core;
+using HetznerCloud.Net.Core.Requests;
 
 namespace HetznerCloud.Net.Objects.Datacenters
 {
-    public class DatacentersRequestResult
+    public class DatacentersRequestResult : MultipleObjectsResultBase<Datacenter>
     {
         [JsonPropertyName("datacenters")]
-        public List<Datacenter> Datacenters { get; set; } 
+        public override List<Datacenter> Data { get; set; } 
 
         [JsonPropertyName("recommendation")]
-        public int Recommendation { get; set; } 
-
-        [JsonPropertyName("meta")]
-        public Meta Meta { get; set; }
+        public int Recommendation { get; set; }
     }
 }

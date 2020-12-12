@@ -1,7 +1,10 @@
-﻿namespace HetznerCloud.Net.Objects.Actions
+﻿using System.Text.Json.Serialization;
+
+namespace HetznerCloud.Net.Objects.Actions
 {
-    public class SingleActionRequestResult
+    public class SingleActionRequestResult : SingleObjectResultBase<Action>
     {
-        public Action Action { get; set; }
+        [JsonPropertyName("action")]
+        public override Action Data { get; set; }
     }
 }

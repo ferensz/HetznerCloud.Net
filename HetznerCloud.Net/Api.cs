@@ -17,8 +17,19 @@ namespace HetznerCloud.Net
         /// </summary>
         public Actions Actions => new Actions(ApiToken);
         
+        /// <summary>
+        /// Certificates endpoint
+        /// </summary>
         public Certificates Certificates => new Certificates(ApiToken);
         
+        /// <summary>
+        /// Datacenters endpoint
+        /// </summary>
         public Datacenters Datacenters => new Datacenters(ApiToken);
+        
+        /// <summary>
+        /// Floating Ips endpoint
+        /// </summary>
+        public FloatingIps FloatingIps => new FloatingIps(ApiToken);
     }
 }

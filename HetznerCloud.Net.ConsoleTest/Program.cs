@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace HetznerCloud.Api.ConsoleTest
+﻿namespace HetznerCloud.Api.ConsoleTest
 {
     class Program
     {

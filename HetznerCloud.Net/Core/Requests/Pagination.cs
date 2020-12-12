@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace HetznerCloud.Net.Core
+namespace HetznerCloud.Net.Core.Requests
 {
     public class Pagination
     {

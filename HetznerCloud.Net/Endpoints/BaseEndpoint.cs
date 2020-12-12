@@ -1,17 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using HetznerCloud.Net.Core;
+using HetznerCloud.Net.Core.Requests;
 using HetznerCloud.Net.Exceptions;
+using HetznerCloud.Net.Objects;
 
 namespace HetznerCloud.Net.Endpoints
 {
-    public class BaseEndpoint
+    public class BaseEndpoint<T, TE, TI> 
+        where T : SingleObjectResultBase<TI>, new() 
+        where TE : MultipleObjectsResultBase<TI>, new()
     {
         private readonly string _apiToken;
+
+        private readonly string _endPointPath;
 
         /// <summary>
         /// User Agent string sent by the wrapper
@@ -27,9 +33,66 @@ namespace HetznerCloud.Net.Endpoints
         /// Constructor of the BaseEndpoint
         /// </summary>
         /// <param name="apiToken">API token to access the Hetzner Cloud API</param>
-        public BaseEndpoint(string apiToken)
+        /// <param name="endPointPath">Path part of the URL for the endpoint</param>
+        protected BaseEndpoint(string apiToken, string endPointPath)
         {
             _apiToken = apiToken;
+            _endPointPath = endPointPath;
+        }
+
+        /// <summary>
+        /// Generic method to get a single item from API with the given Id with type specified by the type parameter
+        /// </summary>
+        /// <param name="id">Id of the item</param>
+        /// <returns>Single item with type specified by the type parameter</returns>
+        public async Task<TI> GetAsync(long id)
+        {
+            var res = await SendRequest($"{_endPointPath}/{id}");
+            var objectResult = JsonSerializer.Deserialize<T>(res, Settings.JsonSerializerOptions);
+
+            // ReSharper disable once PossibleNullReferenceException
+            // If the objectResult is null then an exception has been already thrown
+            return objectResult.Data;
+        }
+        
+        /// <summary>
+        /// Generic method to get all items from API with type specified by the type parameter
+        /// </summary>
+        /// <returns>List of items with type specified by the type parameter</returns>
+        public async Task<List<TI>> GetAllAsync()
+        {
+            List<TI> resultActions = new List<TI>();
+             
+            var res = await SendRequest(_endPointPath);
+            var objectsResultPage = JsonSerializer.Deserialize<TE>(res, Settings.JsonSerializerOptions);
+        
+            if (objectsResultPage != null)
+            {
+                var lastPage = objectsResultPage.Meta.Pagination.LastPage;
+                
+                resultActions.AddRange(objectsResultPage.Data);
+        
+                while (objectsResultPage.Meta.Pagination.Page < lastPage)
+                {
+                    res = await SendRequest(_endPointPath);
+                    objectsResultPage = JsonSerializer.Deserialize<TE>(res, Settings.JsonSerializerOptions);
+            
+                    // ReSharper disable once PossibleNullReferenceException
+                    // If the objectResult is null then an exception has been already thrown
+                    resultActions.AddRange(objectsResultPage.Data);
+                }
+            }
+        
+            return resultActions;
+        }
+
+        /// <summary>
+        /// Generic method to delete an item through the API with the given Id
+        /// </summary>
+        /// <param name="id">Id of the item to be deleted</param>
+        public async void DeleteAsync(long id)
+        {
+            await SendDeleteRequest($"{_endPointPath}/{id}", null);
         }
 
         /// <summary>
