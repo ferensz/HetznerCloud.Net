@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -14,6 +15,7 @@ namespace HetznerCloud.Net.Endpoints
     public class BaseEndpoint<T, TE, TI> 
         where T : SingleObjectResultBase<TI>, new() 
         where TE : MultipleObjectsResultBase<TI>, new()
+    
     {
         private readonly string _apiToken;
 
@@ -90,9 +92,9 @@ namespace HetznerCloud.Net.Endpoints
         /// Generic method to delete an item through the API with the given Id
         /// </summary>
         /// <param name="id">Id of the item to be deleted</param>
-        public async void DeleteAsync(long id)
+        public void Delete(long id)
         {
-            await SendDeleteRequest($"{_endPointPath}/{id}", null);
+            SendDeleteRequest($"{_endPointPath}/{id}", null);
         }
 
         /// <summary>
@@ -135,18 +137,18 @@ namespace HetznerCloud.Net.Endpoints
         /// <param name="action">URL request path part</param>
         /// <param name="objectToSend">Object which will be serialized as JSON and sent to the API</param>
         /// <returns>JSOn string returned from the server</returns>
-        internal async Task<string> SendDeleteRequest(string action, object objectToSend)
+        internal void SendDeleteRequest(string action, object objectToSend)
         {
             CheckApiToken();
 
-            var httpResponse = await GetHttpClient()
+            var httpResponse = GetHttpClient()
                 .SendAsync(GetHttpRequestMessage(HttpMethod.Delete, action,
                     objectToSend == null
                         ? null
                         : new StringContent(JsonSerializer.Serialize(objectToSend), Encoding.UTF8,
-                            "application/json")));
+                            "application/json"))).Result;
 
-            return await HandleResponse(httpResponse);
+            HandleResponse(httpResponse).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -194,8 +196,7 @@ namespace HetznerCloud.Net.Endpoints
         /// <returns>A complete HttpRequestMessage which can be used to interact with the API</returns>
         private HttpRequestMessage GetHttpRequestMessage(HttpMethod method, string action, HttpContent content)
         {
-            HttpRequestMessage request;
-            request = content != null
+            var request = content != null
                 ? new HttpRequestMessage(method, $"{_apiEndpoint}{action}") {Content = content}
                 : new HttpRequestMessage(method, $"{_apiEndpoint}{action}");
 
@@ -213,7 +214,12 @@ namespace HetznerCloud.Net.Endpoints
             if (responseMessage.IsSuccessStatusCode)
             {
                 var resultString = await responseMessage.Content.ReadAsStringAsync();
-                CheckResponseContent(resultString);
+                if (!responseMessage.StatusCode.Equals(HttpStatusCode.NoContent))
+                {
+                    if (string.IsNullOrEmpty(resultString) || string.IsNullOrWhiteSpace(resultString))
+                        throw new InvalidResponseException(
+                            "Response from the API is empty however the return code indicated success");
+                }
 
                 return resultString;
             }
@@ -255,19 +261,6 @@ namespace HetznerCloud.Net.Endpoints
         {
             if (string.IsNullOrEmpty(_apiToken) || string.IsNullOrWhiteSpace(_apiToken))
                 throw new InvalidTokenException("API access token cannot be null or empty");
-        }
-
-        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
-        /// <summary>
-        /// Checks if the result string contains any data
-        /// </summary>
-        /// <param name="response">String needs to be checked</param>
-        /// <exception cref="InvalidResponseException"></exception>
-        private void CheckResponseContent(string response)
-        {
-            if (string.IsNullOrEmpty(response) || string.IsNullOrWhiteSpace(response))
-                throw new InvalidResponseException(
-                    "Response from the API is empty however the return code indicated success");
         }
     }
 }
