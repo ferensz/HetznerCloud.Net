@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace HetznerCloud.Net.Objects.Certificates
 {
-    public class UpdateCertificateObject
+    public class UpdateCertificateObject : UpdateObjectBase
     {
         [JsonPropertyName("name")]
         public string Name { get; set; }
