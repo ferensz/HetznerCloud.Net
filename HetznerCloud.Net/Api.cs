@@ -31,5 +31,15 @@ namespace HetznerCloud.Net
         /// Floating Ips endpoint
         /// </summary>
         public FloatingIps FloatingIps => new FloatingIps(ApiToken);
+        
+        /// <summary>
+        /// Images endpoint
+        /// </summary>
+        public Images Images => new Images(ApiToken);
+        
+        /// <summary>
+        /// Isos endpoint
+        /// </summary>
+        public Isos Isos => new Isos(ApiToken);
     }
 }

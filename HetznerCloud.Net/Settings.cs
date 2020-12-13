@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace HetznerCloud.Net
 {
@@ -11,7 +12,11 @@ namespace HetznerCloud.Net
         internal static JsonSerializerOptions JsonSerializerOptions = new JsonSerializerOptions()
         {
             AllowTrailingCommas = true,
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Converters =
+            {
+                new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
+            }
         };
     }
 }
