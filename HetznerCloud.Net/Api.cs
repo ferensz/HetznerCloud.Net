@@ -41,5 +41,10 @@ namespace HetznerCloud.Net
         /// Isos endpoint
         /// </summary>
         public Isos Isos => new Isos(ApiToken);
+
+        /// <summary>
+        /// Load balancers endpoint
+        /// </summary>
+        public LoadBalancers LoadBalancers => new LoadBalancers(ApiToken);
     }
 }
