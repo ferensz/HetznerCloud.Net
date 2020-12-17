@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text.Json.Serialization;
 using HetznerCloud.Net.Objects.Common;
+using HetznerCloud.Net.Objects.Locations.Models;
 
 namespace HetznerCloud.Net.Objects.LoadBalancers.Models
 {

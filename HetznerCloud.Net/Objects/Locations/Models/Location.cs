@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace HetznerCloud.Net.Objects.Common
+namespace HetznerCloud.Net.Objects.Locations.Models
 {
     public class Location
     {
