@@ -4,9 +4,8 @@ using HetznerCloud.Net.Objects;
 
 namespace HetznerCloud.Net.Endpoints.Base
 {
-    public class BaseEndpointCreate<T, TE, TI, TC> : BaseEndpoint<T, TE, TI>
-        where T : SingleObjectResultBase<TI>, new() 
-        where TE : MultipleObjectsResultBase<TI>, new()
+    public class BaseEndpointCreate<TS, TC, T> : BaseEndpoint
+        where TS : SingleObjectResultBase<T>, new() 
         where TC : CreateObjectBase, new()
     {
         private readonly string _endPointPath;
@@ -16,13 +15,13 @@ namespace HetznerCloud.Net.Endpoints.Base
             _endPointPath = endPointPath;
         }
         
-        public async Task<TI> CreateAsync(TC objectToCreate)
+        public async Task<T> CreateAsync(TC objectToCreate)
         {
             objectToCreate.ValidateObject();
             
             var res = await SendPostRequest(_endPointPath, objectToCreate);
             var createdObject =
-                JsonSerializer.Deserialize<T>(res, Settings.JsonSerializerOptions);
+                JsonSerializer.Deserialize<TS>(res, Settings.JsonSerializerOptions);
 
             return createdObject.Data;
         }

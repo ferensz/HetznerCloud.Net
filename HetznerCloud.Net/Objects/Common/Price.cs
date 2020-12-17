@@ -7,11 +7,11 @@ namespace HetznerCloud.Net.Objects.Common
         /// <summary>
         /// Price without VAT
         /// </summary>
-        [JsonPropertyName("net")] public string Net { get; set; }
+        [JsonPropertyName("net")] public double Net { get; set; }
 
         /// <summary>
         /// Price with VAT
         /// </summary>
-        [JsonPropertyName("gross")] public string Gross { get; set; }
+        [JsonPropertyName("gross")] public double Gross { get; set; }
     }
 }

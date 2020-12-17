@@ -2,9 +2,7 @@
 
 namespace HetznerCloud.Net.Endpoints.Base
 {
-    public class BaseEndpointDelete<T, TE, TI>: BaseEndpoint<T, TE, TI>
-        where T : SingleObjectResultBase<TI>, new() 
-        where TE : MultipleObjectsResultBase<TI>, new()
+    public class BaseEndpointDelete : BaseEndpoint
     {
         private readonly string _endPointPath;
         

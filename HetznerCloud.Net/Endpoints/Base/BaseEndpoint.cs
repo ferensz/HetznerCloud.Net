@@ -12,9 +12,7 @@ using HetznerCloud.Net.Objects;
 
 namespace HetznerCloud.Net.Endpoints.Base
 {
-    public class BaseEndpoint<T, TE, TI> 
-        where T : SingleObjectResultBase<TI>, new() 
-        where TE : MultipleObjectsResultBase<TI>, new()
+    public class BaseEndpoint
     {
         private readonly string _apiToken;
 
@@ -39,52 +37,6 @@ namespace HetznerCloud.Net.Endpoints.Base
         {
             _apiToken = apiToken;
             _endPointPath = endPointPath;
-        }
-
-        /// <summary>
-        /// Generic method to get a single item from API with the given Id with type specified by the type parameter
-        /// </summary>
-        /// <param name="id">Id of the item</param>
-        /// <returns>Single item with type specified by the type parameter</returns>
-        public virtual async Task<TI> GetAsync(long id)
-        {
-            var res = await SendRequest($"{_endPointPath}/{id}");
-            var objectResult = JsonSerializer.Deserialize<T>(res, Settings.JsonSerializerOptions);
-
-            // ReSharper disable once PossibleNullReferenceException
-            // If the objectResult is null then an exception has been already thrown
-            return objectResult.Data;
-        }
-        
-        /// <summary>
-        /// Generic method to get all items from API with type specified by the type parameter
-        /// </summary>
-        /// <returns>List of items with type specified by the type parameter</returns>
-        public async Task<List<TI>> GetAllAsync()
-        {
-            List<TI> resultActions = new List<TI>();
-             
-            var res = await SendRequest(_endPointPath);
-            var objectsResultPage = JsonSerializer.Deserialize<TE>(res, Settings.JsonSerializerOptions);
-        
-            if (objectsResultPage != null)
-            {
-                var lastPage = objectsResultPage.Meta.Pagination.LastPage;
-                
-                resultActions.AddRange(objectsResultPage.Data);
-        
-                while (objectsResultPage.Meta.Pagination.Page < lastPage)
-                {
-                    res = await SendRequest($"{_endPointPath}?page={objectsResultPage.Meta.Pagination.NextPage}");
-                    objectsResultPage = JsonSerializer.Deserialize<TE>(res, Settings.JsonSerializerOptions);
-            
-                    // ReSharper disable once PossibleNullReferenceException
-                    // If the objectResult is null then an exception has been already thrown
-                    resultActions.AddRange(objectsResultPage.Data);
-                }
-            }
-        
-            return resultActions;
         }
 
         /// <summary>
