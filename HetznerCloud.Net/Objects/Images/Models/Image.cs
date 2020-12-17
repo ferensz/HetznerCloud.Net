@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using HetznerCloud.Net.Objects.Common;
 using HetznerCloud.Net.Objects.FloatingIps;
 
 namespace HetznerCloud.Net.Objects.Images.Models
@@ -47,7 +48,7 @@ namespace HetznerCloud.Net.Objects.Images.Models
         public bool RapidDeploy { get; set; } 
 
         [JsonPropertyName("protection")]
-        public ImageProtection Protection { get; set; }
+        public Protection Protection { get; set; }
 
         [JsonPropertyName("deprecated")]
         public DateTime? Deprecated { get; set; } 

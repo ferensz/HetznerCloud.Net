@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using HetznerCloud.Net.Helpers;
 
 namespace HetznerCloud.Net
 {
@@ -15,7 +16,8 @@ namespace HetznerCloud.Net
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             Converters =
             {
-                new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
+                new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
+                new CustomJsonStringEnumConverter()
             }
         };
     }
