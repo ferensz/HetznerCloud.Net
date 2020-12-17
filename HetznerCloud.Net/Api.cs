@@ -46,5 +46,7 @@ namespace HetznerCloud.Net
         /// Load balancers endpoint
         /// </summary>
         public LoadBalancers LoadBalancers => new LoadBalancers(ApiToken);
+
+        public Locations Locations => new Locations(ApiToken);
     }
 }
