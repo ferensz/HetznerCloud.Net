@@ -56,5 +56,15 @@ namespace HetznerCloud.Net
         /// Networks endpoint
         /// </summary>
         public Networks Networks => new Networks(ApiToken);
+
+        /// <summary>
+        /// Servers endpoint
+        /// </summary>
+        public Servers Servers => new Servers(ApiToken);
+
+        /// <summary>
+        /// Server types endpoint
+        /// </summary>
+        public ServerTypes ServerTypes => new ServerTypes(ApiToken);
     }
 }

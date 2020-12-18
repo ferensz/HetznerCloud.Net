@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using HetznerCloud.Net.Helpers;
 
 namespace HetznerCloud.Net.Objects.Locations.Models
 {
@@ -38,13 +39,15 @@ namespace HetznerCloud.Net.Objects.Locations.Models
         /// Latitude of the city closest to the Location
         /// </summary>
         [JsonPropertyName("latitude")]
-        public double Latitude { get; set; } 
+        // [JsonConverter(typeof(JsonStringToDecimalConverter))]
+        public decimal Latitude { get; set; } 
 
         /// <summary>
         /// Longitude of the city closest to the Location
         /// </summary>
         [JsonPropertyName("longitude")]
-        public double Longitude { get; set; } 
+        // [JsonConverter(typeof(JsonStringToDecimalConverter))]
+        public decimal Longitude { get; set; } 
 
         /// <summary>
         /// Name of network zone this Location resides in

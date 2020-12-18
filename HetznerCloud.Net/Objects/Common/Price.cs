@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using HetznerCloud.Net.Helpers;
 
 namespace HetznerCloud.Net.Objects.Common
 {
@@ -7,11 +8,15 @@ namespace HetznerCloud.Net.Objects.Common
         /// <summary>
         /// Price without VAT
         /// </summary>
-        [JsonPropertyName("net")] public double Net { get; set; }
+        [JsonPropertyName("net")]
+        [JsonConverter(typeof(JsonStringToDecimalConverter))]
+        public decimal Net { get; set; }
 
         /// <summary>
         /// Price with VAT
         /// </summary>
-        [JsonPropertyName("gross")] public double Gross { get; set; }
+        [JsonPropertyName("gross")]
+        [JsonConverter(typeof(JsonStringToDecimalConverter))]
+        public decimal Gross { get; set; }
     }
 }
