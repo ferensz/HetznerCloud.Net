@@ -9,7 +9,7 @@ using HetznerCloud.Net.Objects.Images.RequestResults;
 
 namespace HetznerCloud.Net.Endpoints
 {
-    public class Images : IGetObject<Image>, IGetAllObjects<Image>, IUpdateObject<UpdateImageObject, Image>
+    public class Images : IGetObject<Image>, IGetAllObjects<Image>, IUpdateObject<UpdateImageObject, Image>, IDeleteObject
     {
         private const string EndpointPath = "/images";
         
@@ -35,6 +35,11 @@ namespace HetznerCloud.Net.Endpoints
         public async Task<Image> UpdateAsync(long id, UpdateImageObject objectToUpdate)
         {
             return await _endpointService.UpdateAsync<UpdateImageObject>(id, objectToUpdate);
+        }
+
+        public void Delete(long id)
+        {
+            _endpointService.Delete(id);
         }
     }
 }
