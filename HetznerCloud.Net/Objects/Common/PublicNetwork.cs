@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json.Serialization;
 
-namespace HetznerCloud.Net.Objects.LoadBalancers.Models
+namespace HetznerCloud.Net.Objects.Common
 {
     public class PublicNetwork
     {
