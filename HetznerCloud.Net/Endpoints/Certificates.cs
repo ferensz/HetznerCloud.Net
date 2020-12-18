@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json;
+using System.Runtime.ConstrainedExecution;
 using System.Threading.Tasks;
 using HetznerCloud.Net.Endpoints.Base;
 using HetznerCloud.Net.Endpoints.Interfaces;
-using HetznerCloud.Net.Objects;
 using HetznerCloud.Net.Objects.Certificates;
 using HetznerCloud.Net.Objects.Certificates.Models;
 using HetznerCloud.Net.Objects.Certificates.RequestResults;
@@ -11,42 +10,47 @@ using HetznerCloud.Net.Objects.Certificates.RequestResults;
 namespace HetznerCloud.Net.Endpoints
 {
     public class Certificates : 
-        BaseEndpoint<SingleCertificateRequestResult, CertificatesRequestResult, Certificate>, 
-        ICreateObject<CreateCertificateObject, SingleCertificateRequestResult, Certificate>, 
-        IUpdateObject<UpdateCertificateObject, SingleCertificateRequestResult, Certificate>,
+        IGetObject<Certificate>, 
+        IGetAllObjects<Certificate>,
+        ICreateObject<CreateCertificateObject, Certificate>,
+        IUpdateObject<UpdateCertificateObject, Certificate>,
         IDeleteObject
     {
-        private BaseEndpointCreate<SingleCertificateRequestResult, CertificatesRequestResult, Certificate, CreateCertificateObject>
-            _baseCreateEndpoint;
-        
-        private BaseEndpointUpdate<SingleCertificateRequestResult, CertificatesRequestResult, Certificate, UpdateCertificateObject>
-            _baseUpdateEndpoint;
-        
-        private BaseEndpointDelete<SingleCertificateRequestResult, CertificatesRequestResult, Certificate>
-            _baseUpdateDelete;
-        
-        private const string _endpointPath = "/certificates";
-        
-        public Certificates(string apiToken) : base(apiToken, _endpointPath)
+        private readonly EndpointService<SingleCertificateRequestResult, CertificatesRequestResult, Certificate>
+            _endpointService;
+
+        private const string EndpointPath = "/certificates";
+
+        public Certificates(string apiToken)
         {
-            _baseCreateEndpoint = new BaseEndpointCreate<SingleCertificateRequestResult, CertificatesRequestResult, Certificate, CreateCertificateObject>(apiToken, _endpointPath);
-            _baseUpdateEndpoint = new BaseEndpointUpdate<SingleCertificateRequestResult, CertificatesRequestResult, Certificate, UpdateCertificateObject>(apiToken, _endpointPath);
-            _baseUpdateDelete = new BaseEndpointDelete<SingleCertificateRequestResult, CertificatesRequestResult, Certificate>(apiToken, _endpointPath);
+            _endpointService =
+                new EndpointService<SingleCertificateRequestResult, CertificatesRequestResult, Certificate>(apiToken,
+                    EndpointPath);
         }
-        
+
+        public async Task<Certificate> GetAsync(long id)
+        {
+            return await _endpointService.GetAsync(id);
+        }
+
+        public async Task<List<Certificate>> GetAllAsync()
+        {
+            return await _endpointService.GetAllAsync();
+        }
+
         public async Task<Certificate> CreateAsync(CreateCertificateObject objectToCreate)
         {
-            return await _baseCreateEndpoint.CreateAsync(objectToCreate);
+            return await _endpointService.CreateAsync<CreateCertificateObject>(objectToCreate);
         }
 
         public async Task<Certificate> UpdateAsync(long id, UpdateCertificateObject objectToUpdate)
         {
-            return await _baseUpdateEndpoint.UpdateAsync(id, objectToUpdate);
+            return await _endpointService.UpdateAsync<UpdateCertificateObject>(id, objectToUpdate);
         }
 
         public void Delete(long id)
         {
-            _baseUpdateDelete.Delete(id);
+            _endpointService.Delete(id);
         }
     }
 }

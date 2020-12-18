@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using HetznerCloud.Net.Endpoints.Base;
 using HetznerCloud.Net.Endpoints.Interfaces;
 using HetznerCloud.Net.Objects;
@@ -8,22 +9,32 @@ using HetznerCloud.Net.Objects.Images.RequestResults;
 
 namespace HetznerCloud.Net.Endpoints
 {
-    public class Images : BaseEndpoint<SingleImageRequestResult, ImagesRequestResult, Image>,
-        IUpdateObject<UpdateImageObject, SingleImageRequestResult, Image>
+    public class Images : IGetObject<Image>, IGetAllObjects<Image>, IUpdateObject<UpdateImageObject, Image>
     {
-        private BaseEndpointUpdate<SingleImageRequestResult, ImagesRequestResult, Image, UpdateImageObject>
-            _baseUpdateEndpoint;
-
-        private const string _endpointPath = "/images";
+        private const string EndpointPath = "/images";
         
-        public Images(string apiToken) : base(apiToken, _endpointPath)
+        private readonly EndpointService<SingleImageRequestResult, ImagesRequestResult, Image>
+            _endpointService;
+        
+        public Images(string apiToken)
         {
-            _baseUpdateEndpoint = new BaseEndpointUpdate<SingleImageRequestResult, ImagesRequestResult, Image, UpdateImageObject>(apiToken, _endpointPath); 
+            _endpointService =
+                new EndpointService<SingleImageRequestResult, ImagesRequestResult, Image>(apiToken, EndpointPath);
+        }
+        
+        public async Task<Image> GetAsync(long id)
+        {
+            return await _endpointService.GetAsync(id);
+        }
+
+        public async Task<List<Image>> GetAllAsync()
+        {
+            return await _endpointService.GetAllAsync();
         }
 
         public async Task<Image> UpdateAsync(long id, UpdateImageObject objectToUpdate)
         {
-            return await _baseUpdateEndpoint.UpdateAsync(id, objectToUpdate);
+            return await _endpointService.UpdateAsync<UpdateImageObject>(id, objectToUpdate);
         }
     }
 }

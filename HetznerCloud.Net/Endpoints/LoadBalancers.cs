@@ -1,27 +1,39 @@
-﻿using HetznerCloud.Net.Endpoints.Base;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using HetznerCloud.Net.Endpoints.Base;
 using HetznerCloud.Net.Endpoints.Interfaces;
 using HetznerCloud.Net.Objects.LoadBalancers.Models;
 using HetznerCloud.Net.Objects.LoadBalancers.RequestResults;
 
 namespace HetznerCloud.Net.Endpoints
 {
-    public class LoadBalancers : BaseEndpoint<SingleLoadBalancerRequestResult, LoadBalancersRequestResult, LoadBalancer>,
-        IDeleteObject
+    public class LoadBalancers : IGetObject<LoadBalancer>, IGetAllObjects<LoadBalancer>, IDeleteObject
     {
-        private const string _endpointPath = "/load_balancers";
+        private const string EndpointPath = "/load_balancers";
         
-        private BaseEndpointDelete<SingleLoadBalancerRequestResult, LoadBalancersRequestResult, LoadBalancer>
-            _baseDelete;
+        private readonly EndpointService<SingleLoadBalancerRequestResult, LoadBalancersRequestResult, LoadBalancer>
+            _endpointService;
         
-        public LoadBalancers(string apiToken) : base(apiToken, _endpointPath)
+        public LoadBalancers(string apiToken)
         {
-            _baseDelete = new BaseEndpointDelete<SingleLoadBalancerRequestResult, LoadBalancersRequestResult, LoadBalancer>(apiToken, _endpointPath);
+            _endpointService =
+                new EndpointService<SingleLoadBalancerRequestResult, LoadBalancersRequestResult, LoadBalancer>(apiToken,
+                    EndpointPath);
         }
 
+        public async Task<LoadBalancer> GetAsync(long id)
+        {
+            return await _endpointService.GetAsync(id);
+        }
+
+        public async Task<List<LoadBalancer>> GetAllAsync()
+        {
+            return await _endpointService.GetAllAsync();
+        }
 
         public void Delete(long id)
         {
-            _baseDelete.Delete(id);
+            _endpointService.Delete(id);
         }
     }
 }
