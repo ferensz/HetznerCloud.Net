@@ -66,5 +66,15 @@ namespace HetznerCloud.Net
         /// Server types endpoint
         /// </summary>
         public ServerTypes ServerTypes => new ServerTypes(ApiToken);
+
+        /// <summary>
+        /// Ssh keys endpoint
+        /// </summary>
+        public SshKeys SshKeys => new SshKeys(ApiToken);
+
+        /// <summary>
+        /// Volumes endpoint
+        /// </summary>
+        public Volumes Volumes => new Volumes(ApiToken);
     }
 }
