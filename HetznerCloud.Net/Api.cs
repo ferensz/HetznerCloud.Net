@@ -48,6 +48,11 @@ namespace HetznerCloud.Net
         public LoadBalancers LoadBalancers => new LoadBalancers(ApiToken);
 
         /// <summary>
+        /// Load balancer types endpoint
+        /// </summary>
+        public LoadBalancerTypes LoadBalancerTypes => new LoadBalancerTypes(ApiToken);
+
+        /// <summary>
         /// Locations endpoint
         /// </summary>
         public Locations Locations => new Locations(ApiToken);

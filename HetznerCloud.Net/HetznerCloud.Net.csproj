@@ -14,4 +14,8 @@
       <PackageReference Include="System.Text.Json" Version="5.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Objects\LoadBalancers\Models\LoadBalancerType.cs" />
+    </ItemGroup>
+
 </Project>

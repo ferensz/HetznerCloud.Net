@@ -19,7 +19,7 @@ Currently implemented endpoints and functions:
 | Images | :heavy_check_mark: | :heavy_check_mark: | :heavy_minus_sign: | :x: | :heavy_check_mark: | 0/1 |
 | ISOs | :heavy_check_mark: | :heavy_check_mark: | :heavy_minus_sign: | :heavy_minus_sign: | :heavy_minus_sign: |  |
 | Load balancers | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | 0/12 |
-| Load balancer types | :x: | :x: | :heavy_minus_sign: | :heavy_minus_sign: | :heavy_minus_sign: |  |
+| Load balancer types | :heavy_check_mark: | :heavy_check_mark: | :heavy_minus_sign: | :heavy_minus_sign: | :heavy_minus_sign: |  |
 | Locations | :heavy_check_mark: | :heavy_check_mark: | :heavy_minus_sign: | :heavy_minus_sign: | :heavy_minus_sign: |  |
 | Networks | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | 0/6 |
 | Pricing | :heavy_check_mark: | :heavy_minus_sign: | :heavy_minus_sign: | :heavy_minus_sign: | :heavy_minus_sign: |  |
